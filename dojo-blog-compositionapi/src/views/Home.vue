@@ -21,29 +21,36 @@
 
 <script>
 import PostList from '../components/PostList.vue'
-import { ref } from '@vue/reactivity'
+// import { ref } from '@vue/reactivity'
+import getPosts from '../composables/getPosts'
 export default {
     name: 'Home',
     components: { PostList },
     setup() {
         // how we can use props in setup function?
-        const posts = ref([]);
-        const error = ref(null);
+        // const posts = ref([]);
+        // const error = ref(null);
         // const showPosts = ref(true);
-        const load = async () => {
-            try {
-                const data = await fetch('http://localhost:3000/posts');
-                if (!data.ok){
-                   throw Error('No data available.')
-                }
-                posts.value = await data.json();
-            } catch(err) {
-                error.value = err.message;
-                console.log(error.value);
-            }
-        }
 
+        // externalizing the function for further use -> composables/getPosts
+        // composables 
+        // const load = async () => {
+        //     try {
+        //         const data = await fetch('http://localhost:3000/posts');
+        //         if (!data.ok){
+        //            throw Error('No data available.')
+        //         }
+        //         posts.value = await data.json();
+        //     } catch(err) {
+        //         error.value = err.message;
+        //         console.log(error.value);
+        //     }
+        // }
+
+        // load();
+        const { posts, error, load } = getPosts();
         load();
+
         return { posts, error }
     },
 }
