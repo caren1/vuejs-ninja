@@ -1,9 +1,20 @@
 <template>
     <div class="home">
         <h1>Home</h1>
-        <PostList :posts="posts" v-if="showPosts"/>
-        <button @click="showPosts = !showPosts">toggle posts</button>
-        <button @click="posts.pop()">remove post</button>
+        <!-- <PostList :posts="posts" v-if="showPosts"/> -->
+        <div v-if="error">
+            {{ error }}
+        </div>
+        <div v-if="posts.length">
+            <PostList :posts="posts"/>
+        </div>
+        <div v-else>
+            Loading..
+        </div>
+        
+        
+        <!-- <button @click="showPosts = !showPosts">toggle posts</button>
+        <button @click="posts.pop()">remove post</button> -->
     
     </div>
 </template>
@@ -16,13 +27,24 @@ export default {
     components: { PostList },
     setup() {
         // how we can use props in setup function?
-        const posts = ref([
-            { title: 'Welcome to the blog', body: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', id: 1 },
-            { title: 'Top 5CSS tips', body: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur', id: 2 }
-        ])
-        const showPosts = ref(true);
+        const posts = ref([]);
+        const error = ref(null);
+        // const showPosts = ref(true);
+        const load = async () => {
+            try {
+                const data = await fetch('http://localhost:3000/posts');
+                if (!data.ok){
+                   throw Error('No data available.')
+                }
+                posts.value = await data.json();
+            } catch(err) {
+                error.value = err.message;
+                console.log(error.value);
+            }
+        }
 
-        return { posts, showPosts }
+        load();
+        return { posts, error }
     },
 }
 </script>
