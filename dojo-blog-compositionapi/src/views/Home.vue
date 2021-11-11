@@ -21,11 +21,13 @@
     <div v-for="name in matchingNames" :key="name">
       <p>{{ name }}</p>
     </div>
+    <button @click="handleClick">stop watching</button>
   </div>
 </template>
 
 <script>
 import { ref, reactive, computed } from '@vue/reactivity'
+import { watch, watchEffect } from '@vue/runtime-core'
 // @ is an alias to /src
 
 export default {
@@ -84,11 +86,31 @@ export default {
       const search = ref('')
       const names = ref(['wojt', 'wojtek', 'mario', 'luigi', 'koopa'])
 
+      // we could set up a watch function - allows to run some code when some value changes
+      const stopWatch = watch(search, () => {
+        console.log('watch function ran');
+      })
+
+    // we only pass a function
+      const stopEffect = watchEffect(() => {
+        // this runs initially when component first runs
+        // it knows when to run, because we use search.value within it
+        // looks for any dependencies from inside
+        // similar to watch, but we do not have to specify one value
+        console.log('watch effect function run', search.value);
+      })
+
       const matchingNames = computed(() => {
         return names.value.filter((name) => name.includes(search.value))
       })
 
-      return { names, search, matchingNames }
+      const handleClick = () => {
+        // when we want to stop the 'watches' we assign them to variables and then invoke
+        stopWatch();
+        stopEffect()
+      }
+
+      return { names, search, matchingNames, handleClick }
     }
 
     // const p = ref(null);
