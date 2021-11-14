@@ -10,12 +10,12 @@
       "id": 2,
       "title": "Marketing campaign",
       "details": "lorem ipsum",
-      "complete": true
+      "complete": false
     },
     {
       "title": "Make a website",
       "details": "swietone",
-      "complete": true,
+      "complete": false,
       "id": 3
     }
   ]
