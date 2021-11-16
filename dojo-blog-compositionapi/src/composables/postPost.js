@@ -4,7 +4,6 @@ const postPost = (newPost) => {
      const error = ref(null);
         const load = async () => {
             try {
-                await new Promise(resolve => setTimeout(() => { resolve(), 2000 }))
                 const data = await 
                 fetch('http://localhost:3000/posts', {
                     method: 'POST',
