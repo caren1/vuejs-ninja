@@ -23,8 +23,7 @@
 import PostList from '../components/PostList.vue'
 // import { ref } from '@vue/reactivity'
 import getPosts from '../composables/getPosts'
-import Spinner from '../components/Spinner.vue
-'
+import Spinner from '../components/Spinner.vue'
 export default {
     name: 'Home',
     components: { PostList, Spinner },
