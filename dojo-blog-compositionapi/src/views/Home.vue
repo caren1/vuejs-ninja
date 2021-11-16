@@ -9,7 +9,7 @@
             <PostList :posts="posts"/>
         </div>
         <div v-else>
-            Loading..
+            <Spinner />
         </div>
         
         
@@ -23,9 +23,11 @@
 import PostList from '../components/PostList.vue'
 // import { ref } from '@vue/reactivity'
 import getPosts from '../composables/getPosts'
+import Spinner from '../components/Spinner.vue
+'
 export default {
     name: 'Home',
-    components: { PostList },
+    components: { PostList, Spinner },
     setup() {
         // how we can use props in setup function?
         // const posts = ref([]);
