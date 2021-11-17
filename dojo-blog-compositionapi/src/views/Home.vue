@@ -5,8 +5,9 @@
         <div v-if="error">
             {{ error }}
         </div>
-        <div v-if="posts.length">
+        <div v-if="posts.length" class="layout">
             <PostList :posts="posts"/>
+            <TagCloud :posts="posts" />
         </div>
         <div v-else>
             <Spinner />
@@ -24,9 +25,10 @@ import PostList from '../components/PostList.vue'
 // import { ref } from '@vue/reactivity'
 import getPosts from '../composables/getPosts'
 import Spinner from '../components/Spinner.vue'
+import TagCloud from '../components/TagCloud.vue'
 export default {
     name: 'Home',
-    components: { PostList, Spinner },
+    components: { PostList, Spinner, TagCloud },
     setup() {
         // how we can use props in setup function?
         // const posts = ref([]);
@@ -57,10 +59,16 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
     .home{
         max-width: 1200px;
         margin: 0 auto;
         padding: 10px;
+    }
+
+    .layout {
+        display: grid;
+        grid-template-columns: 3fr 1fr;
+        gap: 20px;
     }
 </style>
