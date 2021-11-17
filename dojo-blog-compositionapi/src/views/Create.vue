@@ -19,6 +19,7 @@
 import { ref } from '@vue/reactivity'
 import { useRouter,use } from 'vue-router'
 import postPost from '../composables/postPost'
+import { timestamp } from '../firebase/config'
 export default {
  setup() {
     const title = ref('')
@@ -41,7 +42,8 @@ export default {
       const newPost = { 
         title: title.value, 
         body: body.value, 
-        tags: tags.value 
+        tags: tags.value,
+        createdAt: timestamp()
       }
 
       const { load } =  postPost(JSON.stringify(newPost));
