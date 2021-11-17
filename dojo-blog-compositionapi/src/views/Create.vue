@@ -17,7 +17,7 @@
 
 <script>
 import { ref } from '@vue/reactivity'
-import { useRouter } from 'vue-router'
+import { useRouter,use } from 'vue-router'
 import postPost from '../composables/postPost'
 export default {
  setup() {
