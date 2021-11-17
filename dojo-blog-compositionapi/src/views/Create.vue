@@ -17,6 +17,7 @@
 
 <script>
 import { ref } from '@vue/reactivity'
+import { useRouter } from 'vue-router'
 import postPost from '../composables/postPost'
 export default {
  setup() {
@@ -24,6 +25,9 @@ export default {
     const body = ref('')
     const tag = ref('')
     const tags = ref([]);
+
+    // returns a router instance
+    const router = useRouter();
 
     const handleKeydown = () => {
       if (!tags.value.includes(tag.value)){
@@ -41,7 +45,8 @@ export default {
       }
 
       const { load } =  postPost(JSON.stringify(newPost));
-      load();
+      await load();
+      router.push({ name: 'Home' })
 
       // await fetch ('http://localhost:3000/posts', {
       //   method: 'POST',
