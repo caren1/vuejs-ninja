@@ -3,6 +3,9 @@
       <input type="text" name="displayName" id="displayName" required v-model="displayName" placeholder="display name" />
       <input type="email" name="email" id="email" required v-model="email" placeholder="email" />
       <input type="password" name="password" id="password" required v-model="password" placeholder="password" />
+      <div class="error">
+          {{ error }}
+      </div>
       <button>sign up</button>
   </form>
 </template>
@@ -27,7 +30,7 @@ export default {
                 password.value = ''
             }
 
-            return { displayName, email, password, handleSubmit }
+            return { displayName, email, password, handleSubmit, error }
     }
 }
 </script>

@@ -3,14 +3,14 @@ import { projectAuth } from '../firebase/config'
 
 const error = ref(null)
 
-const signup = async (email, password, displayName) => {
+const login = async (email, password) => {
     error.value = null;
     try {
-        const response = await projectAuth.createUserWithEmailAndPassword(email, password)
+        const response = await projectAuth.signInWithEmailAndPassword(email, password)
         if (!response){
-            throw new Error('Could not complete the sign up..')
+            throw new Error('Could not log in..')
         }
-        await response.user.updateProfile({ displayName })
+        
         // console.log(response.user);
         error.value = null;
         return response;
@@ -20,8 +20,8 @@ const signup = async (email, password, displayName) => {
     }
 }
 
-const useSignup = () => {
-    return { error, signup }
+const useLogin = () => {
+    return { error, login }
 }
 
-export default useSignup;
+export default useLogin;
