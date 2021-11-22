@@ -1,4 +1,5 @@
 import { ref } from '@vue/reactivity'
+import { watchEffect } from '@vue/runtime-core'
 import { projectFirestore } from '../firebase/config'
 
 const getCollection = (collection) => {
@@ -9,7 +10,7 @@ const getCollection = (collection) => {
     .collection(collection)
     .orderBy('createdAt');
 
-    collectionRef.onSnapshot((snapshot) => {
+    const unsub = collectionRef.onSnapshot((snapshot) => {
         let results = [];
         snapshot.docs.forEach((doc) => {
             doc.data().createdAt && results.push({ ...doc.data(), id: doc.id })
@@ -19,6 +20,11 @@ const getCollection = (collection) => {
     }, (err) => {
         documents.value = null;
         error.value = 'Couldnt fetch the data.'
+    })
+
+    watchEffect((onInvalidate) => {
+        // unsub from previous collection when watcher is stopped (component unomunted)
+        onInvalidate(() => unsub())
     })
     return { documents, error }
 }
