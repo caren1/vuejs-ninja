@@ -11,7 +11,8 @@
 import { ref } from '@vue/reactivity'
 import useLogin from '../composables/useLogin'
 export default {
-    setup() {
+    setup(props, context) {
+        // context always comes as second parameter for setup function
             const { error, login } = useLogin();
             // refs 
             const email = ref('')
@@ -21,7 +22,7 @@ export default {
                 // console.log(email.value, password.value);
                 await login(email.value, password.value);
                 if (!error.value) {
-                    console.log('user logged in');
+                    context.emit('login')
                     email.value = ''
                     password.value = ''
                 }
