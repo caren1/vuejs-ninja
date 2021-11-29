@@ -9,7 +9,7 @@
       <h2>{{ playlist.title }}</h2>
       <p class="username">Created by {{ playlist.username }}</p>
       <p class="description">{{ playlist.description }}</p>
-      <button v-if="ownership">delete playlist</button>
+      <button v-if="ownership" @click="handleDelete">delete playlist</button>
     </div>
     <div class="song-list">
       <p>songs will be listed here</p>
@@ -21,19 +21,31 @@
 <script>
 import getDocument from '@/composables/getDocument'
 import getUser from '@/composables/getUser'
+import useDocument from '@/composables/useDocument'
+import useStorage from '@/composables/useStorage'
 import { computed } from '@vue/reactivity'
+import { useRouter } from 'vue-router'
 
 export default {
     props: ['id'],
     setup(props) {
       const { error, document: playlist } = getDocument('playlists', props.id)
       const { user } = getUser();
+      const { deleteDoc } = useDocument('playlists', props.id);
+      const { deleteImage } = useStorage();
+      const router = useRouter();
 
       const ownership = computed(() => {
         return playlist.value && user.value && user.value.uid == playlist.value.userId
       })
 
-      return { error, playlist, ownership }
+      const handleDelete = async () => {
+        await deleteImage(playlist.value.filePath)
+        await deleteDoc();
+        router.push({ name: 'Home' })
+      }
+
+      return { error, playlist, ownership, handleDelete }
     }
 }
 </script>
